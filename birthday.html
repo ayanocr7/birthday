@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday, Xin Yu 🎉</title>
+<style>
+  :root{
+    --bg:#0f1630;
+    --card:#0b1226;
+    --accent:#ff5f8d;
+    --muted:#cfd8e3;
+    --glass: rgba(255,255,255,0.06);
+    --cake-size: 200px; /* base size for cake and candles */
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: radial-gradient(ellipse at 10% 10%, #09102a 0%, var(--bg) 40%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    color:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* Layout */
+  .wrap{
+    min-height:100%;
+    display:grid;
+    place-items:center;
+    padding:40px 20px;
+    box-sizing:border-box;
+  }
+
+  .card{
+    width:100%;
+    max-width:960px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:20px;
+    padding:28px;
+    box-shadow: 0 8px 40px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* Header greeting */
+  .greet{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .title{
+    font-size:clamp(28px,4vw,48px);
+    line-height:1;
+    color: white;
+    letter-spacing: -0.02em;
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .title .spark{
+    display:inline-block;
+    transform:translateY(-4px);
+    font-size:0.9em;
+    filter: drop-shadow(0 4px 12px rgba(255,95,141,0.35));
+  }
+  .subtitle{
+    color: #ffeef3;
+    opacity:1;
+    margin:6px 0 0 0;
+    font-size:clamp(13px,2vw,16px);
+  }
+
+  /* Buttons */
+  .controls{
+    margin-left:auto;
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn{
+    background:linear-gradient(180deg,var(--accent), #ff3a74);
+    color:white;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(255,95,141,0.18);
+    transition:transform .18s ease, box-shadow .18s ease, opacity .12s;
+  }
+  .btn:active{ transform:translateY(2px) scale(.995); }
+  .btn.secondary{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+    box-shadow:none;
+  }
+
+  /* Main content */
+  .main{
+    display:flex;
+    gap:28px;
+    margin-top:22px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  /* Cake */
+  .cake-wrap{
+    width:320px;
+    max-width:42%;
+    min-width:240px;
+    text-align:center;
+  }
+
+  .cake{
+    width:var(--cake-size);
+    height:calc(var(--cake-size) * 0.75);
+    margin:0 auto;
+    position:relative;
+  }
+
+  /* Bottom layer */
+  .cake .layer.btm{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:calc(var(--cake-size) * 0.32);
+    background:linear-gradient(180deg,#ffd6e0,#ffb6c9);
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35), inset 0 4px 14px rgba(255,255,255,0.25);
+  }
+
+  /* Middle layer */
+  .cake .layer.mid{
+    position:absolute;
+    bottom:calc(var(--cake-size) * 0.32);
+    width:100%;
+    height:calc(var(--cake-size) * 0.22);
+    background:linear-gradient(180deg,#ffe7ea,#ffdfe6);
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.32), inset 0 4px 14px rgba(255,255,255,0.25);
+  }
+
+  /* Icing */
+  .cake .icing{
+    position:absolute;
+    bottom:calc(var(--cake-size) * 0.52);
+    left:10%;
+    right:10%;
+    height:calc(var(--cake-size) * 0.20);
+    background:linear-gradient(180deg,#fff3f6,#ffeef3);
+    border-radius:22px 22px 14px 14px;
+    box-shadow: inset 0 -6px 18px rgba(255,200,220,0.25);
+    z-index:3;
+  }
+
+  /* Candles on top */
+  .candles{
+    position:absolute;
+    bottom:calc(var(--cake-size) * 0.72);
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:calc(var(--cake-size) * 0.04);
+    z-index:5;
+  }
+
+  .candle{
+    width:calc(var(--cake-size) * 0.03);
+    height:calc(var(--cake-size) * 0.14);
+    background:linear-gradient(180deg,#fff,#ffd6e0);
+    border-radius:6px;
+    position:relative;
+    animation:sway 3s ease-in-out infinite;
+  }
+
+  .candle:nth-child(odd){ animation-delay:.12s; }
+
+  .flame{
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    width:calc(var(--cake-size) * 0.06);
+    height:calc(var(--cake-size) * 0.09);
+    background: radial-gradient(circle at 35% 30%, #fff 0%, #ffd36b 20%, #ff7a5c 60%, rgba(255,122,92,0) 61%);
+    border-radius:50% 50% 40% 40%;
+    filter:drop-shadow(0 3px 6px rgba(255,120,80,0.32));
+    animation:flicker .18s infinite linear;
+  }
+
+  @keyframes sway {
+    0%,100%{ transform: rotate(-4deg); }
+    50%{ transform: rotate(6deg); }
+  }
+  @keyframes flicker {
+    0%{ transform:translateX(-50%) scaleY(1); opacity:1; }
+    50%{ transform:translateX(-50%) scaleY(1.12); opacity:.9; }
+    100%{ transform:translateX(-50%) scaleY(1); opacity:1; }
+  }
+
+  /* Message card */
+  .message{
+    flex:1 1 280px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    padding:18px 18px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.5);
+    backdrop-filter: blur(6px);
+  }
+  .message p{
+    margin:0 0 12px 0;
+    font-size:clamp(15px,2.1vw,18px);
+    line-height:1.45;
+    color:#ffffff;
+    text-shadow: 0 6px 18px rgba(0,0,0,0.55);
+  }
+  .message .from{
+    font-size:13px;
+    color:#ffd6e0;
+    opacity:.9;
+  }
+
+  /* Balloons */
+  .balloons{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+  }
+  .balloon{
+    width:56px;
+    height:72px;
+    background:linear-gradient(180deg,#ff9fc4,#ff5f8d);
+    border-radius:50% 50% 46% 46%;
+    position:absolute;
+    left:8%;
+    bottom: -30%;
+    transform-origin:center;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35), inset 0 -8px 18px rgba(255,255,255,0.15);
+    animation: floatUp linear infinite;
+    opacity:0.92;
+  }
+  .balloon::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-22px;
+    transform:translateX(-50%);
+    width:2px;
+    height:36px;
+    background:linear-gradient(180deg,#bdbdbd,#8a8a8a);
+    border-radius:2px;
+  }
+  @keyframes floatUp {
+    0%{ transform: translateY(0) rotate(-6deg); opacity:0; }
+    8%{ opacity:1; }
+    100%{ transform: translateY(-150vh) rotate(12deg); opacity:0.95; }
+  }
+
+  /* Confetti canvas covers whole card */
+  canvas.confetti{
+    position:absolute;
+    left:0; top:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:2;
+  }
+
+  /* Ensure content sits above decorations */
+  .greet, .main, .footer{
+    position:relative;
+    z-index:6;
+  }
+
+  .title{
+    text-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+
+  /* Small footer */
+  .footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:18px;
+    color:#97a7cf;
+    font-size:13px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width:720px){
+    .main{ flex-direction:column-reverse; gap:18px; }
+    .cake-wrap{ max-width:100%; }
+    .controls{ order:2; width:100%; justify-content:flex-end; margin-top:6px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" role="region" aria-label="Happy Birthday card for Xin Yu">
+    <div class="balloons" aria-hidden="true" id="balloonContainer"></div>
+    <canvas class="confetti" id="confettiCanvas"></canvas>
+
+    <div class="greet" style="position:relative; z-index:8">
+      <div>
+        <h1 class="title">
+          <span class="spark">🎉</span>
+          Happy Birthday, Baobei ❤️
+          <span class="spark">💖</span>
+        </h1>
+      </div>
+
+      <div class="controls" style="position:relative; z-index:6">
+        <button class="btn" id="playBtn" title="Play the surprise tune">Play surprise</button>
+        <button class="btn secondary" id="confettiBtn" title="Toggle confetti">Confetti</button>
+      </div>
+    </div>
+
+    <div class="main" style="position:relative; z-index:6">
+      <div class="cake-wrap" aria-hidden="true">
+        <div class="cake" role="img" aria-label="Birthday cake">
+
+      <!-- Bottom layer -->
+      <div class="layer btm"></div>
+
+      <!-- Middle layer -->
+      <div class="layer mid"></div>
+
+      <!-- Icing -->
+      <div class="icing"></div>
+
+      <!-- Candles -->
+      <div class="candles">
+        <div class="candle"><span class="flame"></span></div>
+        <div class="candle"><span class="flame"></span></div>
+        <div class="candle"><span class="flame"></span></div>
+      </div>
+
+    </div>
+      </div>
+
+      <div class="message">
+        <p>Dear Xin Yu,</p>
+        <p>Every day with you feels like a gift - your laugh, your kindness, and your beautiful smile light up my life. I hope this year brings you everything you've been dreaming of and more. Let's celebrate you today and always ✨</p>
+        <div class="from">With all my love - Rafi</div>
+      </div>
+    </div>
+
+    <!-- <div class="footer" style="position:relative; z-index:6">
+      <div>Make a wish — and blow out your candles ✨</div>
+      <div>— Always yours</div>
+    </div> -->
+  </div>
+</div>
+
+<!-- Optional short birthday tune (public domain-ish simple melody) -->
+<audio id="tune" preload="auto">
+  <source src="" type="audio/mpeg">
+</audio>
+
+<script>
+/* -------------------------
+   Confetti (simple canvas)
+   ------------------------- */
+(function(){
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], running = true;
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function makeParticle(){
+    return {
+      x: rand(0, W),
+      y: H + 10,
+      vx: rand(-1.5,1.5),
+      vy: rand(-6, -2),
+      size: Math.round(rand(6,14)),
+      color: ['#ff5f8d','#ffd36b','#9be6a0','#7dc4ff','#cfa9ff'][Math.floor(Math.random()*5)],
+      rot: rand(0,360),
+      drag: 0.985,
+      life: rand(80,160)
+    };
+  }
+
+  function spawn(n){
+    for(let i=0;i<n;i++) particles.push(makeParticle());
+  }
+
+  function update(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.vy += 0.15; // gravity
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= p.drag;
+      p.vy *= 0.999;
+      p.rot += p.vx * 4;
+      p.life--;
+      // draw
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot * Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+      ctx.restore();
+
+      if(p.y > H + 60 || p.life < 0) particles.splice(i,1);
+    }
+    if(running) requestAnimationFrame(update);
+  }
+
+  // start with some confetti
+  spawn(60);
+  update();
+
+  // controls
+  document.getElementById('confettiBtn').addEventListener('click', function(){
+    if(particles.length < 5){
+      spawn(120);
+    } else {
+      // clear / stop
+      particles = [];
+    }
+  });
+
+  // expose a toggle
+  window.__confettiSpawn = spawn;
+})();
+
+/* -------------------------
+   Floating balloons (DOM)
+   ------------------------- */
+(function(){
+  const container = document.getElementById('balloonContainer');
+  const colors = ['linear-gradient(180deg,#ff9fc4,#ff5f8d)','linear-gradient(180deg,#ffd36b,#ffac33)','linear-gradient(180deg,#9be6a0,#4bd47b)','linear-gradient(180deg,#7dc4ff,#3b8bff)','linear-gradient(180deg,#cfa9ff,#a56cff)'];
+
+  function addBalloon(i){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.background = colors[i % colors.length];
+    const left = Math.random() * 95;
+    b.style.left = left + '%';
+    const dur = 10 + Math.random()*16;
+    b.style.animationDuration = dur + 's';
+    b.style.animationDelay = (Math.random()*4) + 's';
+    b.style.transform = 'translateY(0) rotate('+ (Math.random()*40-20) +'deg)';
+    container.appendChild(b);
+    // remove after it floats out
+    setTimeout(()=> b.remove(), (dur + 2) * 1000);
+  }
+
+  // create a gentle stream
+  setInterval(()=> addBalloon(Math.floor(Math.random()*5)), 900);
+  // create initial batch
+  for(let i=0;i<8;i++) addBalloon(i);
+})();
+
+/* -------------------------
+   Play simple birthday tune (WebAudio)
+   ------------------------- */
+(function(){
+  const playBtn = document.getElementById('playBtn');
+  let ctx, osc, isPlaying=false, gain;
+
+  function startTune(){
+    if(!window.AudioContext && !window.webkitAudioContext) {
+      alert('Audio not supported in this browser.');
+      return;
+    }
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    gain = ctx.createGain();
+    gain.gain.value = 0.12;
+    gain.connect(ctx.destination);
+
+    // simple "Happy Birthday" melody (notes in semitone steps relative to A4=440Hz)
+    const notes = [
+      {n: 64, d:.4},{n:64, d:.4},{n:66, d:.8},{n:64, d:.8},{n:69, d:.8},{n:68,d:1.6},
+      {n:64, d:.4},{n:64, d:.4},{n:66, d:.8},{n:64, d:.8},{n:71, d:.8},{n:69,d:1.6},
+      {n:64, d:.4},{n:64, d:.4},{n:76, d:.8},{n:73, d:.8},{n:69, d:.8},{n:68, d:.8},{n:66,d:1.6},
+      {n:74, d:.4},{n:74, d:.4},{n:73, d:.8},{n:69, d:.8},{n:71, d:.8},{n:69,d:1.6}
+    ];
+
+    let t = ctx.currentTime + 0.2;
+    notes.forEach((note, i) => {
+      const o = ctx.createOscillator();
+      o.type = 'sine';
+      o.frequency.value = midiToFreq(note.n);
+      o.connect(gain);
+      o.start(t);
+      o.stop(t + note.d*0.9);
+      t += note.d;
+    });
+
+    isPlaying = true;
+    playBtn.textContent = 'Play tune';
+    // after playing, unlock resume behavior
+    setTimeout(()=> isPlaying=false, (t - ctx.currentTime + 0.5)*1000);
+  }
+
+  function midiToFreq(m){
+    return 440 * Math.pow(2, (m - 69)/12);
+  }
+
+  playBtn.addEventListener('click', function(){
+    // Due to browser autoplay policies, resume or create AudioContext on user gesture
+    try{
+      if(!ctx || ctx.state === 'closed'){ startTune(); }
+      else if(ctx.state === 'suspended'){ ctx.resume(); startTune(); }
+      else startTune();
+    }catch(e){
+      console.error(e);
+      alert('Could not play audio — try clicking the button again.');
+    }
+  });
+})();
+
+/* -------------------------
+   Little accessibility enhancement:
+   Press 'c' to trigger confetti
+   ------------------------- */
+document.addEventListener('keydown', e=>{
+  if(e.key.toLowerCase()==='c') window.__confettiSpawn && window.__confettiSpawn(140);
+});
+</script>
+</body>
+</html>
